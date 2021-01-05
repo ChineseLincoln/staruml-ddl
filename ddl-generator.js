@@ -119,6 +119,10 @@ class DDLGenerator {
     if (elem.primaryKey || !elem.nullable) {
       line += ' NOT NULL'
     }
+    if(options.dbms === "mysql"){
+        var documentation = elem.documentation
+        line += ' COMMENT '+self.replaceAll(documentation, "'", "''")
+    }
     return line
   }
 
@@ -187,20 +191,16 @@ class DDLGenerator {
   }
 
 
-  writeComments (codeWriter, elem, options) {
+  writeOracleComments (codeWriter, elem, options) {
     var self = this
-    if (options.dbms === "mysql") {
-    } else if (options.dbms === "oracle") {
-  
       // Columns
-      elem.columns.forEach(function (col) {
-        var documentation = col.documentation
-        if(!!documentation) {
-          documentation = "" + documentation
-          codeWriter.writeLine("COMMENT ON COLUMN " + elem.name + "." + col.name + " IS '" + self.replaceAll(documentation, "'", "''") + "';")
-        }
-      })
-    }
+    elem.columns.forEach(function (col) {
+      var documentation = col.documentation
+      if(!!documentation) {
+        documentation = "" + documentation
+        codeWriter.writeLine("COMMENT ON COLUMN " + elem.name + "." + col.name + " IS '" + self.replaceAll(documentation, "'", "''") + "';")
+      }
+    })
   }
 
 replaceAll (target, search, replacement) {
@@ -307,11 +307,13 @@ return target.split(search).join(replacement);
       })
   
       // Comments
-      elem.ownedElements.forEach(e => {
-        if (e instanceof type.ERDEntity) {
-          this.writeComments(codeWriter, e, options)
-        }
-      })
+      if(options.dbms === "oracle"){
+        elem.ownedElements.forEach(e => {
+          if (e instanceof type.ERDEntity) {
+            this.writeOracleComments(codeWriter, e, options)
+          }
+        })
+      }
 
       // Others (Nothing generated.)
       fs.writeFileSync(basePath, codeWriter.getData())
