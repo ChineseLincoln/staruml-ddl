@@ -241,24 +241,37 @@ return target.split(search).join(replacement);
       for (var i = 0, len = lines.length; i < len; i++) {
           codeWriter.writeLine(lines[i] + (i < len - 1 ? "," : "" ));
       }
+      if(options.tablespaceData.len > 0 ){
+          codeWriter.outdent();
+          codeWriter.writeLine(") tablespace " + options.tablespaceData + ";");
+          codeWriter.writeLine();
+           // Primary Keys
+        if (primaryKeys.length > 0) {
+          codeWriter.writeLine("alter table " + tablename + " add primary key (" + primaryKeys.join(", ") + ") using index tablespace " + options.tablespaceIndex + ";");
+        }
 
-      codeWriter.outdent();
-      codeWriter.writeLine(") tablespace " + options.tablespaceData + ";");
-      codeWriter.writeLine();
+        codeWriter.writeLine();
 
+        // Uniques
+        if (uniques.length > 0) {
+          codeWriter.writeLine("alter table " + tablename + " add unique (" + uniques.join(", ") + ") using index tablespace " + options.tablespaceIndex + ";");
+        }
+      }else{
+          codeWriter.outdent();
+          codeWriter.writeLine(");");
+          codeWriter.writeLine();
+           if (primaryKeys.length > 0) {
+              codeWriter.writeLine("alter table " + tablename + " add primary key (" + primaryKeys.join(", ") + ");");
+            }
 
-    // Primary Keys
-    if (primaryKeys.length > 0) {
-      codeWriter.writeLine("alter table " + tablename + " add primary key (" + primaryKeys.join(", ") + ") using index tablespace " + options.tablespaceIndex + ";");
-    }
+            codeWriter.writeLine();
 
-    codeWriter.writeLine();
-
-    // Uniques
-    if (uniques.length > 0) {
-      codeWriter.writeLine("alter table " + tablename + " add unique (" + uniques.join(", ") + ") using index tablespace " + options.tablespaceIndex + ";");
-    }
-
+            // Uniques
+            if (uniques.length > 0) {
+              codeWriter.writeLine("alter table " + tablename + " add unique (" + uniques.join(", ") + ");");
+            }
+      }
+   
     codeWriter.writeLine()
   }
 
