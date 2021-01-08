@@ -103,3 +103,7 @@ Contributions
 -------------
 
 Any contributions are welcome. If you find a bug or have a suggestion, please post as an issue.
+
+Feture
+-------------
+2021-01-08 add colume comment with doucument property
