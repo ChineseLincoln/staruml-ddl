@@ -121,7 +121,7 @@ class DDLGenerator {
     }
     if(options.dbms === "mysql"){
         var documentation = elem.documentation
-        line += ' COMMENT '+self.replaceAll(documentation, "'", "''")
+        line += ' COMMENT "'+documentation+'"'
     }
     return line
   }

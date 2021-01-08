@@ -5,11 +5,11 @@
   "homepage": "https://github.com/niklauslee/staruml-ddl",
   "issues": "https://github.com/niklauslee/staruml-ddl/issues",
   "keywords": ["ddl", "erd", "database"],
-  "version": "0.9.2",
+  "version": "0.9.9",
   "author": {
-    "name": "Minkyu Lee",
-    "email": "niklaus.lee@gmail.com",
-    "url": "https://github.com/niklauslee"
+    "name": "Lincoln",
+    "email": "sodlinken@gmail.com",
+    "url": "https://github.com/ChineseLincoln"
   },
   "license": "MIT",
   "engines": {
